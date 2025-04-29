@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Retreat_Management_System.web.Data;
 
@@ -11,9 +12,11 @@ using Retreat_Management_System.web.Data;
 namespace Retreat_Management_System.web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250429183325_AddPaymentTable")]
+    partial class AddPaymentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,6 +238,9 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("RetreatDetailsID")
+                        .HasColumnType("int");
+
                     b.Property<int>("RetreatID")
                         .HasColumnType("int");
 
@@ -248,7 +254,7 @@ namespace Retreat_Management_System.web.Data.Migrations
 
                     b.HasKey("BookingID");
 
-                    b.HasIndex("RetreatID");
+                    b.HasIndex("RetreatDetailsID");
 
                     b.HasIndex("UserID");
 
@@ -289,13 +295,13 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.ToTable("Payment");
                 });
 
-            modelBuilder.Entity("Retreat_Management_System.web.Data.Retreat", b =>
+            modelBuilder.Entity("Retreat_Management_System.web.Data.RetreatDetails", b =>
                 {
-                    b.Property<int>("RetreatID")
+                    b.Property<int>("RetreatDetailsID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RetreatID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RetreatDetailsID"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -323,9 +329,9 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("RetreatID");
+                    b.HasKey("RetreatDetailsID");
 
-                    b.ToTable("Retreat");
+                    b.ToTable("RetreatDetails");
                 });
 
             modelBuilder.Entity("Retreat_Management_System.web.Data.User", b =>
@@ -425,9 +431,9 @@ namespace Retreat_Management_System.web.Data.Migrations
 
             modelBuilder.Entity("Retreat_Management_System.web.Data.Booking", b =>
                 {
-                    b.HasOne("Retreat_Management_System.web.Data.Retreat", "Retreat")
+                    b.HasOne("Retreat_Management_System.web.Data.RetreatDetails", "RetreatDetails")
                         .WithMany()
-                        .HasForeignKey("RetreatID")
+                        .HasForeignKey("RetreatDetailsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -437,7 +443,7 @@ namespace Retreat_Management_System.web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Retreat");
+                    b.Navigation("RetreatDetails");
 
                     b.Navigation("User");
                 });
