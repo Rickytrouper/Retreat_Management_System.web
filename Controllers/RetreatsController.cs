@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Retreat_Management_System.web.Data;
 
@@ -21,7 +19,8 @@ namespace Retreat_Management_System.web.Controllers
         // GET: Retreats
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Retreat.ToListAsync());
+            var retreats = await _context.Retreat.ToListAsync(); // Ensure DbSet is plural
+            return View(retreats);
         }
 
         // GET: Retreats/Details/5
@@ -49,11 +48,9 @@ namespace Retreat_Management_System.web.Controllers
         }
 
         // POST: Retreats/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RetreatID,RetreatName,Description,Location,StartDate,EndDate,Price,Capacity")] Retreat retreat)
+        public async Task<IActionResult> Create(Retreat retreat)
         {
             if (ModelState.IsValid)
             {
@@ -81,11 +78,9 @@ namespace Retreat_Management_System.web.Controllers
         }
 
         // POST: Retreats/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RetreatID,RetreatName,Description,Location,StartDate,EndDate,Price,Capacity")] Retreat retreat)
+        public async Task<IActionResult> Edit(int id, Retreat retreat)
         {
             if (id != retreat.RetreatID)
             {
@@ -105,10 +100,7 @@ namespace Retreat_Management_System.web.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -142,9 +134,8 @@ namespace Retreat_Management_System.web.Controllers
             if (retreat != null)
             {
                 _context.Retreat.Remove(retreat);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

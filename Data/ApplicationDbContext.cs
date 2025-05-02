@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Retreat_Management_System.web.Models;
 
 namespace Retreat_Management_System.web.Data
 {
@@ -16,7 +17,12 @@ namespace Retreat_Management_System.web.Data
             : base(options)
         {
         }
-      
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Additional configuration can go here, e.g., keyless entity types if needed
+        }
+
 
     }   
 }

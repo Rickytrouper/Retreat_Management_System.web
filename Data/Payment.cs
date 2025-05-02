@@ -1,29 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-
 namespace Retreat_Management_System.web.Data
 {
     public class Payment
     {
         public int PaymentID { get; set; }
 
-        [Required]
-        public required int BookingID { get; set; }
+        public int? BookingID { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
+        
+        [Range(0, double.MaxValue)]
         public required decimal Amount { get; set; }
 
-        public DateTime PaymentDate { get; set; } = DateTime.Now;
+        public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
 
-        [Required]
+        
         [StringLength(50)]
-        public required string PaymentMethod { get; set; } // "Credit Card", "PayPal", "Bank Transfer"
+        [RegularExpression(@"^(Credit Card|PayPal|Bank Transfer)$", ErrorMessage = "Invalid Payment Method")]
+        public required string PaymentMethod { get; set; }
 
-        [Required]
+       
         [StringLength(20)]
-        public required string Status { get; set; } // "Successful", "Failed", "Pending"
-        public required Booking Booking { get; set; }
+        [RegularExpression(@"^(Successful|Failed|Pending)$", ErrorMessage = "Invalid Status")]
+        public required  string Status { get; set; }
+
+       
+        [StringLength(255)]
+        public required string TransactionID { get; set; }
 
     }
 }

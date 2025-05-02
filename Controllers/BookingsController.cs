@@ -21,8 +21,7 @@ namespace Retreat_Management_System.web.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Booking.Include(b => b.Retreat).Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Booking.ToListAsync());
         }
 
         // GET: Bookings/Details/5
@@ -34,8 +33,6 @@ namespace Retreat_Management_System.web.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.Retreat)
-                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {
@@ -48,8 +45,6 @@ namespace Retreat_Management_System.web.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["RetreatID"] = new SelectList(_context.Retreat, "RetreatID", "Description");
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Email");
             return View();
         }
 
@@ -58,7 +53,7 @@ namespace Retreat_Management_System.web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingID,UserID,RetreatID,BookingDate,Status")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingID,UserID,RetreatID,BookingDate,Status,UserName,Email,CardNumber,ExpiryDate,CVV,PaymentStatus")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -66,8 +61,6 @@ namespace Retreat_Management_System.web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RetreatID"] = new SelectList(_context.Retreat, "RetreatID", "Description", booking.RetreatID);
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Email", booking.UserID);
             return View(booking);
         }
 
@@ -84,8 +77,6 @@ namespace Retreat_Management_System.web.Controllers
             {
                 return NotFound();
             }
-            ViewData["RetreatID"] = new SelectList(_context.Retreat, "RetreatID", "Description", booking.RetreatID);
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Email", booking.UserID);
             return View(booking);
         }
 
@@ -94,7 +85,7 @@ namespace Retreat_Management_System.web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingID,UserID,RetreatID,BookingDate,Status")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingID,UserID,RetreatID,BookingDate,Status,UserName,Email,CardNumber,ExpiryDate,CVV,PaymentStatus")] Booking booking)
         {
             if (id != booking.BookingID)
             {
@@ -121,8 +112,6 @@ namespace Retreat_Management_System.web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RetreatID"] = new SelectList(_context.Retreat, "RetreatID", "Description", booking.RetreatID);
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Email", booking.UserID);
             return View(booking);
         }
 
@@ -135,8 +124,6 @@ namespace Retreat_Management_System.web.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.Retreat)
-                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {

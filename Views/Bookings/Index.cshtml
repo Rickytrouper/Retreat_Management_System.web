@@ -13,16 +13,34 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RetreatID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.BookingDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Retreat)
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CardNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpiryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CVV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentStatus)
             </th>
             <th></th>
         </tr>
@@ -31,16 +49,34 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RetreatID)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
+                @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Retreat.Description)
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CardNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpiryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CVV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentStatus)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BookingID">Edit</a> |

@@ -1,71 +1,50 @@
 ﻿@model IEnumerable<Retreat_Management_System.web.Data.Retreat>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Retreats List";
 }
 
-<h1>Index</h1>
+<h1>Retreats List</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New Retreat</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RetreatName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
+            <th>Retreat Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Price</th>
+            <th>Capacity</th>
+            <th>Contact Info</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RetreatName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RetreatID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RetreatID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RetreatID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var retreat in Model)
+        {
+            <tr>
+                <td>@retreat.RetreatName</td>
+                <td>@retreat.Description</td>
+                <td>@retreat.Location</td>
+                <td>@retreat.StartDate.ToShortDateString()</td>
+                <td>@retreat.EndDate.ToShortDateString()</td>
+                <td>@retreat.Price</td>
+                <td>@retreat.Capacity</td>
+                <td>@retreat.ContactInfo</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <a asp-action="Edit" asp-route-id="@retreat.RetreatID" class="btn btn-primary btn-sm mr-2">Edit</a>
+                        <a asp-action="Details" asp-route-id="@retreat.RetreatID" class="btn btn-info btn-sm mr-2">Details</a>
+                        <a asp-action="Delete" asp-route-id="@retreat.RetreatID" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to delete @retreat.RetreatName?')">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

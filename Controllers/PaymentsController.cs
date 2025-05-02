@@ -21,8 +21,7 @@ namespace Retreat_Management_System.web.Controllers
         // GET: Payments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Payment.Include(p => p.Booking);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Payment.ToListAsync());
         }
 
         // GET: Payments/Details/5
@@ -34,7 +33,6 @@ namespace Retreat_Management_System.web.Controllers
             }
 
             var payment = await _context.Payment
-                .Include(p => p.Booking)
                 .FirstOrDefaultAsync(m => m.PaymentID == id);
             if (payment == null)
             {
@@ -47,7 +45,6 @@ namespace Retreat_Management_System.web.Controllers
         // GET: Payments/Create
         public IActionResult Create()
         {
-            ViewData["BookingID"] = new SelectList(_context.Booking, "BookingID", "Status");
             return View();
         }
 
@@ -56,7 +53,7 @@ namespace Retreat_Management_System.web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaymentID,BookingID,Amount,PaymentDate,PaymentMethod,Status")] Payment payment)
+        public async Task<IActionResult> Create([Bind("PaymentID,BookingID,Amount,PaymentDate,PaymentMethod,Status,TransactionID")] Payment payment)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +61,6 @@ namespace Retreat_Management_System.web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookingID"] = new SelectList(_context.Booking, "BookingID", "Status", payment.BookingID);
             return View(payment);
         }
 
@@ -81,7 +77,6 @@ namespace Retreat_Management_System.web.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookingID"] = new SelectList(_context.Booking, "BookingID", "Status", payment.BookingID);
             return View(payment);
         }
 
@@ -90,7 +85,7 @@ namespace Retreat_Management_System.web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PaymentID,BookingID,Amount,PaymentDate,PaymentMethod,Status")] Payment payment)
+        public async Task<IActionResult> Edit(int id, [Bind("PaymentID,BookingID,Amount,PaymentDate,PaymentMethod,Status,TransactionID")] Payment payment)
         {
             if (id != payment.PaymentID)
             {
@@ -117,7 +112,6 @@ namespace Retreat_Management_System.web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookingID"] = new SelectList(_context.Booking, "BookingID", "Status", payment.BookingID);
             return View(payment);
         }
 
@@ -130,7 +124,6 @@ namespace Retreat_Management_System.web.Controllers
             }
 
             var payment = await _context.Payment
-                .Include(p => p.Booking)
                 .FirstOrDefaultAsync(m => m.PaymentID == id);
             if (payment == null)
             {

@@ -12,6 +12,18 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RetreatID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RetreatID)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BookingDate)
         </dt>
         <dd class = "col-sm-10">
@@ -24,16 +36,40 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
+            @Html.DisplayFor(model => model.UserName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Retreat)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Retreat.Description)
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CardNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CardNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExpiryDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CVV)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CVV)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PaymentStatus)
         </dd>
     </dl>
     

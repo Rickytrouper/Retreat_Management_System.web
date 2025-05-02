@@ -7,10 +7,57 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Retreat_Management_System.web.styles.css" asp-append-version="true" />
+    <style>
+        /* Custom styles for the retreat theme */
+        .navbar {
+            background-color: #a7d1ab; /* Light pastel green */
+            padding: 15px 0; /* Add padding for a more spacious feel */
+        }
+
+            .navbar .navbar-brand {
+                color: #ffffff; /* White text */
+                font-size: 24px; /* Larger font size */
+                font-weight: bold; /* Bold font */
+            }
+
+            .navbar .nav-link {
+                color: #ffffff !important; /* White text */
+                padding: 10px 15px; /* Add padding to nav links */
+                transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+            }
+
+                .navbar .nav-link:hover {
+                    background-color: #73a879; /* Darker green on hover */
+                    color: #ffffff !important; /* Keep text white on hover */
+                }
+
+        .navbar-toggler-icon {
+            background-color: #ffffff; /* White color for the toggler icon */
+        }
+
+        /* Ensure all nav links are white */
+        .navbar .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .footer {
+            background-color: #343a40; /* Dark background */
+            color: #ffffff; /* White text */
+            padding: 10px 0;
+        }
+
+            .footer a {
+                color: #ffcc00; /* Gold color for links */
+            }
+
+                .footer a:hover {
+                    color: #ffffff; /* White on hover */
+                }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Retreat Management System</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,13 +67,24 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <!-- test  Retreats Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Retreats" asp-action="Index">Retreats</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Create">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -39,7 +97,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Retreat_Management_System.web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Retreat Management System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

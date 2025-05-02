@@ -12,8 +12,8 @@ using Retreat_Management_System.web.Data;
 namespace Retreat_Management_System.web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250429180421_AddRetreatDetailsTable")]
-    partial class AddRetreatDetailsTable
+    [Migration("20250430215753_UpdateLonginView")]
+    partial class UpdateLonginView
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,16 +227,118 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Retreat_Management_System.web.Data.RetreatDetails", b =>
+            modelBuilder.Entity("Retreat_Management_System.web.Data.Booking", b =>
                 {
-                    b.Property<int>("RetreatDetailsID")
+                    b.Property<int>("BookingID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RetreatDetailsID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingID"));
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CVV")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("RetreatID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("BookingID");
+
+                    b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("Retreat_Management_System.web.Data.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("BookingID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("TransactionID")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("PaymentID");
+
+                    b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("Retreat_Management_System.web.Data.Retreat", b =>
+                {
+                    b.Property<int>("RetreatID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RetreatID"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
+
+                    b.Property<string>("ContactInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -245,10 +347,19 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("OrganizerID")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -261,9 +372,9 @@ namespace Retreat_Management_System.web.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("RetreatDetailsID");
+                    b.HasKey("RetreatID");
 
-                    b.ToTable("RetreatDetails");
+                    b.ToTable("Retreat");
                 });
 
             modelBuilder.Entity("Retreat_Management_System.web.Data.User", b =>
@@ -274,36 +385,46 @@ namespace Retreat_Management_System.web.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
 
+                    b.Property<string>("ContactInfo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("UserID");
 

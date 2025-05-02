@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Retreat_Management_System.web.Data;
 
@@ -32,8 +32,7 @@ namespace Retreat_Management_System.web.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserID == id);
+            var user = await _context.User.FirstOrDefaultAsync(m => m.UserID == id);
             if (user == null)
             {
                 return NotFound();
@@ -49,14 +48,33 @@ namespace Retreat_Management_System.web.Controllers
         }
 
         // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Username,Password,Email,FirstName,LastName,DateCreated,LastLogin")] User user)
+        public async Task<IActionResult> Create(
+    [Bind("Username,Password,Email,FirstName,LastName,ContactInfo")] User user,
+    IFormFile profilePicture)
         {
             if (ModelState.IsValid)
             {
+                // Set the role to "User"
+                user.Role = "User";
+
+                if (profilePicture != null && profilePicture.Length > 0)
+                {
+                    var fileName = Path.GetFileName(profilePicture.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await profilePicture.CopyToAsync(stream);
+                    }
+
+                    user.ProfilePicture = $"/images/{fileName}";
+                }
+
+                user.DateCreated = DateTime.UtcNow;
+                user.LastLogin = null;
+
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -81,11 +99,12 @@ namespace Retreat_Management_System.web.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Username,Password,Email,FirstName,LastName,DateCreated,LastLogin")] User user)
+        public async Task<IActionResult> Edit(
+    int id,
+    [Bind("UserID,Username,Password,Email,FirstName,LastName,ContactInfo,DateCreated,LastLogin")] User user,
+    IFormFile profilePicture)
         {
             if (id != user.UserID)
             {
@@ -96,6 +115,26 @@ namespace Retreat_Management_System.web.Controllers
             {
                 try
                 {
+                    // Handle profile picture upload if provided
+                    if (profilePicture != null && profilePicture.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(profilePicture.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await profilePicture.CopyToAsync(stream);
+                        }
+
+                        user.ProfilePicture = $"/images/{fileName}";
+                    }
+                    else
+                    {
+                        // If no new profile picture, keep the existing one
+                        var existingUser = await _context.User.FindAsync(id);
+                        user.ProfilePicture = existingUser?.ProfilePicture;
+                    }
+
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -123,8 +162,7 @@ namespace Retreat_Management_System.web.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserID == id);
+            var user = await _context.User.FirstOrDefaultAsync(m => m.UserID == id);
             if (user == null)
             {
                 return NotFound();
