@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Retreat_Management_System.web.Data;
+using Retreat_Management_System.web.Models; // Make sure this namespace exists and contains your view models
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Retreat_Management_System.web.Controllers
 {
@@ -51,8 +56,8 @@ namespace Retreat_Management_System.web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-    [Bind("Username,Password,Email,FirstName,LastName,ContactInfo")] User user,
-    IFormFile profilePicture)
+            [Bind("Username,Password,Email,FirstName,LastName,ContactInfo")] User user,
+            IFormFile profilePicture)
         {
             if (ModelState.IsValid)
             {
@@ -102,9 +107,9 @@ namespace Retreat_Management_System.web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-    int id,
-    [Bind("UserID,Username,Password,Email,FirstName,LastName,ContactInfo,DateCreated,LastLogin")] User user,
-    IFormFile profilePicture)
+            int id,
+            [Bind("UserID,Username,Password,Email,FirstName,LastName,ContactInfo,DateCreated,LastLogin")] User user,
+            IFormFile profilePicture)
         {
             if (id != user.UserID)
             {
@@ -189,6 +194,54 @@ namespace Retreat_Management_System.web.Controllers
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.UserID == id);
+        }
+
+        // GET: Users/Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Users/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Authenticate the user (replace with your actual authentication logic)
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Email == model.Email);
+
+                if (user != null && user.Password == model.Password) // Replace with proper password hashing
+                {
+                    // Create claims
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Email),
+                        // Add other claims as needed (e.g., user ID, roles)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = model.IsPersistent,
+                        // Add other authentication properties as needed
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    return RedirectToAction("Index", "Home"); // Redirect to the home page
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+
+            return View(model);
         }
     }
 }

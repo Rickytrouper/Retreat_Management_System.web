@@ -1,12 +1,11 @@
 ﻿@model Retreat_Management_System.web.Data.User
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Sign Up";
 }
 
-<h1>Create</h1>
+<h1>Sign Up</h1>
 
-<h4>User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,45 +17,48 @@
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-
+            <br />  
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" type="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-
+            <br />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
-            <!-- Removed Role Input -->
+           <br />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
+           <br />   
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+            <br />
 
             <div class="form-group">
                 <label asp-for="ProfilePicture" class="control-label"></label>
                 <input type="file" name="profilePicture" accept="image/*" class="form-control" />
             </div>
 
+            <br />
             <div class="form-group">
                 <label asp-for="ContactInfo" class="control-label"></label>
                 <input asp-for="ContactInfo" class="form-control" />
                 <span asp-validation-for="ContactInfo" class="text-danger"></span>
             </div>
-
+            <br />
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-sm mr-2">Create Retreat</button>
+                <button type="submit" class="btn btn-primary btn-sm mr-2">Create User</button>
                 <a asp-action="Index" class="btn btn-secondary btn-sm">Back to List</a>
             </div>
         </form>
